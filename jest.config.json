@@ -1,0 +1,35 @@
+{
+    "resetModules": true,
+    "verbose": true,
+    "collectCoverageFrom": [
+        "**/*.js",
+        "!__tests__/*",
+        "!__mocks__/*",
+        "!routes/*",
+        "!index.js",
+        "!server.js",
+        "!database.js",
+        "!migrations/*",
+        "!config/*",
+        "!coverage/*"
+    ],
+    "moduleFileExtensions": [
+        "js",
+        "json"
+    ],
+    "testRegex": [
+        ".test.js$"
+    ],
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+        "^@/(.*)$": "<rootDir>/$1"
+    },
+    "coverageThreshold": {
+        "global": {
+            "branches": 85,
+            "functions": 70,
+            "lines": 85,
+            "statements": 85
+        }
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "resetModules": true,
+    "verbose": true,
+    "moduleFileExtensions": [
+        "js",
+        "json"
+    ],
+    "testRegex": [
+        "__tests__/*",
+        ".spec.js$",
+        "!test-results/*"
+    ],
+    "coverageDirectory": "test-results",
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+        "^@/(.*)$": "<rootDir>/$1"
+    }
+}
