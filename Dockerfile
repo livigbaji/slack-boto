@@ -23,7 +23,7 @@ EXPOSE ${PORT}
 CMD (if [[ "$NODE_ENV" == "ci" ]]; then \
     wait-port $DB_HOST:$DB_PORT -t 120000 && npm run test:e2e; \
     elif [[ "$NODE_ENV" == "production" ]]; then \
-    wait-port $DB_HOST:$DB_PORT -t 60000 && npm run start; \
+    npm run start; \
     else \
     wait-port $DB_HOST:$DB_PORT -t 60000 && npm run start:dev; \
     fi);
