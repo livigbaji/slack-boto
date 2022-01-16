@@ -1,0 +1,43 @@
+version: "3.3"
+
+volumes:
+  database-data: {}
+
+networks:
+  avengers-network: {}
+
+services:
+  
+  database:
+    image: mongo:4.4
+    ports:
+      - 27012:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: tchalla
+      MONGO_INITDB_ROOT_PASSWORD: wakandaforever
+    restart: always
+    volumes:
+      - database-data:/data/db
+    networks:
+      - avengers-network
+
+  restapi:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args: 
+        PORT: 4500
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=ci
+      - DB_PORT=${DB_PORT:-27012}
+      - DB_HOST=database
+    depends_on:
+      - database
+    ports:
+      - '4500:4500'
+    networks:
+      - avengers-network
+    
