@@ -8,7 +8,7 @@ COPY package*.json ./
 
 RUN npm i -g wait-port
 
-COPY ./ /
+COPY ./ ./
 
 RUN adduser -S ironman
 
