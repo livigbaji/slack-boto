@@ -5,7 +5,7 @@
         "**/*.js",
         "!__tests__/*",
         "!__mocks__/*",
-        "!routes/*",
+        "!**/routes/*",
         "!index.js",
         "!server.js",
         "!database.js",

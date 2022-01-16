@@ -42,6 +42,9 @@ app.use(express.urlencoded({
 app.response = Object.create(customExpress);
 app.all('/', indexRoute);
 
+app.use('/messages', require('./modules/bots/routes'));
+app.use('/auth', require('./modules/auth/routes'));
+
 // catch all errors middleware
 app.use(catchAllErrorsMiddleware);
 
