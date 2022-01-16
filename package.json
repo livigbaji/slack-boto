@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --config jest.config.json",
+    "coverage": "rm -rf coverage && jest --config jest.config.json --coverage",
+    "test:e2e": "jest --config jest-e2e.config.json",
+    "lint": "eslint \"**/*.js\" --fix",
+    "start": "node index.js",
+    "start:dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -12,5 +17,13 @@
   "dependencies": {
     "express": "^4.17.2",
     "mongoose": "^6.1.6"
+  },
+  "devDependencies": {
+    "eslint": "^8.7.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^25.7.0",
+    "jest": "^27.4.7",
+    "nodemon": "^2.0.15"
   }
 }
