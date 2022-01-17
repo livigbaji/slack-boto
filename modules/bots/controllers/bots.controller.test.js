@@ -1,64 +1,75 @@
 require('dotenv').config();
 
 const { mockNext, mockRequest, mockResponse } = require('../../../__mocks__/http');
+const { textPrompt } = require('../../../__mocks__/slack');
+// jest.mock('../models/response.model');
 const BotsController = require('./bots.controller');
+const ResponseRepository = require('../repositories/response.repository');
 
 describe('Bots Controller', () => {
-	it('Callback returns yo', async () => {
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+	it('Returns all user response with default pagination', async () => {
+		const req = mockRequest({});
+
+		const res = mockResponse();
+
+		const mockRepoResponse = [
+			{ 
+				message: 'Cap! Come in',
+				question: 'stuff Cap said'
+			}
+		];
+
+		const responseSpy = jest.spyOn(ResponseRepository, 'getResponses').mockResolvedValueOnce(mockRepoResponse);
+		await BotsController.responses(req, res, mockNext);
+		expect(responseSpy).toBeCalledWith({
+			user: undefined,
+			limit: undefined,
+			offset: undefined
+		});
+		expect(res.data).toBeCalledWith(mockRepoResponse);
+	});
+
+	it('Returns all user response with user defined pagination', async () => {
 		const req = mockRequest({
-			body: {
-				stuffFromSlack: '...and I, am Iron man',
+			query: {
+				limit: 10,
+				offset: 0,
+				user: 'stuff'
 			}
 		});
 
 		const res = mockResponse();
 
-		await BotsController.bot(req, res, mockNext);
+		const mockRepoResponse = [{
+			message: 'Cap! Come in',
+			question: 'stuff Cap said'
+		}];
 
-		expect(res.json).toBeCalledWith({
-			text: 'Would you like to play a game?',
-			response_type: 'in_channel',
-			attachments: [{
-				text: 'Choose a game to play',
-				fallback: 'If you could read this message, you\'d be choosing something fun to do right now.',
-				color: '#3AA3E3',
-				attachment_type: 'default',
-				callback_id: 'game_selection',
-				actions: [{
-					name: 'games_list',
-					text: 'Pick a game...',
-					type: 'select',
-					options: [{
-						text: 'Hearts',
-						value: 'hearts'
-					},
-					{
-						text: 'Bridge',
-						value: 'bridge'
-					},
-					{
-						text: 'Checkers',
-						value: 'checkers'
-					},
-					{
-						text: 'Chess',
-						value: 'chess'
-					},
-					{
-						text: 'Poker',
-						value: 'poker'
-					},
-					{
-						text: 'Falken\'s Maze',
-						value: 'maze'
-					},
-					{
-						text: 'Global Thermonuclear War',
-						value: 'war'
-					}
-					]
-				}]
-			}]
+		const responseSpy = jest.spyOn(ResponseRepository, 'getResponses').mockResolvedValueOnce(mockRepoResponse);
+		await BotsController.responses(req, res, mockNext);
+		expect(responseSpy).toBeCalledWith({
+			limit: 10,
+			offset: 0,
+			user: 'stuff'
 		});
+		expect(res.data).toBeCalledWith(mockRepoResponse);
+	});
+
+	it('Gets prompt and replies', async () => {
+		const req = mockRequest({
+			body: textPrompt('Thanos')
+		});
+
+		const res = mockResponse();
+
+		const mockRepoResponse = ResponseRepository.QUESTIONSENUM.ASKFORHELLO.promt;
+
+		const responseSpy = jest.spyOn(ResponseRepository, 'getPromptAndReply').mockResolvedValueOnce(mockRepoResponse);
+		await BotsController.message(req, res, mockNext);
+		expect(responseSpy).toBeCalledWith(textPrompt('Thanos'));
+		expect(res.json).toBeCalledWith(mockRepoResponse);
 	});
 });
