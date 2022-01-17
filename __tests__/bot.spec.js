@@ -3,11 +3,14 @@ require('dotenv').config();
 const request = require('supertest');
 const server = require('../server');
 const { textPrompt, selectionPrompt } = require('../__mocks__/slack');
+const database = require('../database');
+let connection;
 
 describe('PROMPT FOR HELLO IF NORMAL PROMPT IS NOT HELLO', () => {
 	let response;
 
 	beforeAll(async () => {
+		connection = connection || await database;
 		response = await request(server).post('/messages').send(textPrompt('time travel!'));
 	});
 
@@ -24,6 +27,7 @@ describe('INTRO RETURNS DROP DOWN OF MOODS', () => {
 	let response;
 
 	beforeAll(async () => {
+		connection = connection || await database;
 		response = await request(server).post('/messages').send(textPrompt('hello'));
 	});
 
@@ -68,6 +72,7 @@ describe('ANSWER TO INTRO RETURNS LIST OF HOBBIES', () => {
 	let response;
 
 	beforeAll(async () => {
+		connection = connection || await database;
 		response = await request(server).post('/messages').send(selectionPrompt({ selection: 'Feeling Lucky' }));
 	});
 
@@ -77,29 +82,37 @@ describe('ANSWER TO INTRO RETURNS LIST OF HOBBIES', () => {
 
 	it('Sends a prompt to select hobby', () => {
 		expect(response.body).toEqual({
-			text: 'Welcome. How are you doing?',
+			text: 'What are your favorite hobbies?',
 			response_type: 'in_channel',
 			attachments: [{
-				text: 'Select Your Mood',
+				text: 'Select Your Hobby',
 				fallback: 'If you could read this message, you\'d be choosing something fun to do right now.',
 				color: '#3AA3E3',
 				attachment_type: 'default',
-				callback_id: 'mood_selection',
+				callback_id: 'hobby_selection',
 				actions: [{
-					name: 'mood_list',
-					text: 'Pick a mood...',
+					name: 'hobby_list',
+					text: 'Pick a hobby...',
 					type: 'select',
 					options: [{
-						text: 'Doing Well',
-						value: 'Doing Well'
+						text: 'Football',
+						value: 'Football'
 					},
 					{
-						text: 'Neutral',
-						value: 'Neutral'
+						text: 'Music',
+						value: 'Music'
 					},
 					{
-						text: 'Feeling Lucky',
-						value: 'Feeling Lucky'
+						text: 'Sleep',
+						value: 'Sleep'
+					},
+					{
+						text: 'Movies',
+						value: 'Movies'
+					},
+					{
+						text: 'Basketball',
+						value: 'Basketball'
 					}
 					]
 				}]
@@ -112,7 +125,12 @@ describe('ANSWER TO HOBBIES RETRUNS THANK YOU', () => {
 	let response;
 
 	beforeAll(async () => {
+		connection = connection || await database;
 		response = await request(server).post('/messages').send(selectionPrompt({ selection: 'Music', name: 'hobby_list' }));
+	});
+
+	afterAll(async () => {
+		connection && await connection.disconnect();
 	});
 
 	it('returns 200 status code', () => {
