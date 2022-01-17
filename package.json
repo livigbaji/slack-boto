@@ -1,7 +1,7 @@
 {
   "name": "slack-botto",
   "version": "1.0.0",
-  "description": "",
+  "description": "Slack bot",
   "main": "index.js",
   "scripts": {
     "test": "jest --config jest.config.json",
@@ -12,15 +12,21 @@
     "start:dev": "nodemon index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Livinus Igbaji",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bestbrain10/slack-boto.git"
+  },
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bestbrain10/slack-boto/issues"
+  },
+  "homepage": "https://github.com/bestbrain10/slack-boto#readme",
   "dependencies": {
-    "axios": "^0.24.0",
     "dotenv": "^12.0.3",
     "express": "^4.17.2",
     "express-async-handler": "^1.2.0",
-    "mongoose": "^6.1.6",
-    "slackbots": "^1.2.0"
+    "mongoose": "^6.1.6"
   },
   "devDependencies": {
     "eslint": "^8.7.0",
