@@ -49,11 +49,7 @@ describe('Bots Controller', () => {
 	});
 
 	it('Prompts for \'/bot hello\' if prompt is not a recognized command', async () => {
-		const toObjectSpy = jest.fn().mockResolvedValueOnce({ message: 'Thanos' });
-
-		const decodeSpy = jest.spyOn(ResponseRepository, 'decodePayload').mockReturnValueOnce({
-			toObject: toObjectSpy
-		});
+		const decodeSpy = jest.spyOn(ResponseRepository, 'decodePayload').mockResolvedValueOnce({ message: 'Thanos' });
 
 		const response = await ResponseRepository.getPromptAndReply(textPrompt('Thanos'));
 		expect(decodeSpy).toBeCalledWith(textPrompt('Thanos'));
@@ -63,10 +59,8 @@ describe('Bots Controller', () => {
 
 	
 	it('Returns reply if prompt is a recognized command', async () => {
-		const toObjectSpy = jest.fn().mockResolvedValueOnce({ message: 'hello' });
-
-		const decodeSpy = jest.spyOn(ResponseRepository, 'decodePayload').mockReturnValueOnce({
-			toObject: toObjectSpy
+		const decodeSpy = jest.spyOn(ResponseRepository, 'decodePayload').mockResolvedValueOnce({
+			message: 'hello'
 		});
 
 		const response = await ResponseRepository.getPromptAndReply(textPrompt('hello'));

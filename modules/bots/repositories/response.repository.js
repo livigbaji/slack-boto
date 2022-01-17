@@ -118,7 +118,7 @@ module.exports = class {
 	 * @param {Object} prompt 
 	 */
 	static async getPromptAndReply(prompt) {
-		const { message } = await this.decodePayload(prompt).toObject();
+		const { message } = await this.decodePayload(prompt);
 		return (Object.values(this.QUESTIONSENUM).find(({ trigger }) => trigger && trigger.includes(message)) || this.QUESTIONSENUM.ASKFORHELLO).prompt;
 	}
 
