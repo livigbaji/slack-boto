@@ -70,10 +70,10 @@ module.exports = class {
 			},
 			THANKYOU: {
 				trigger: Object.values(this.HOOBIESENUM),
-				prompt: 'thank you'
+				prompt: { text: 'thank you' }
 			},
 			ASKFORHELLO: {
-				prompt: 'Send \'/bot hello\' to start a conversation'
+				prompt: { text: 'Send \'/bot hello\' to start a conversation' }
 			}
 		};
 	}
