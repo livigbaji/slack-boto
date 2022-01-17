@@ -52,6 +52,17 @@ describe('Bots Controller', () => {
 
 	});
 
+	it('Prompts for \'/bot hello\' if prompt is empty', async () => {
+		const decodeSpy = jest.spyOn(ResponseRepository, 'decodePayload').mockRejectedValueOnce({
+			message: 'Thanos'
+		});
+
+		const response = await ResponseRepository.getPromptAndReply(textPrompt('Thanos'));
+		expect(decodeSpy).toBeCalledWith(textPrompt('Thanos'));
+		expect(response).toEqual(ResponseRepository.QUESTIONSENUM.ASKFORHELLO.prompt);
+
+	});
+
 	
 	it('Returns reply if prompt is a recognized command', async () => {
 		const decodeSpy = jest.spyOn(ResponseRepository, 'decodePayload').mockResolvedValueOnce({

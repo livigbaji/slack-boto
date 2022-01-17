@@ -6,7 +6,7 @@ const {
 const catchAllMiddleware = require('./catch-all-errors.middleware');
 
 describe('Catch all errors middleware', () => {
-	test('does not log errors in non development environment', async () => {
+	it('does not log errors in non development environment', async () => {
 		process.env.NODE_ENV = 'spaceship';
 		const req = mockRequest();
 		const res = mockResponse();
@@ -21,7 +21,7 @@ describe('Catch all errors middleware', () => {
 		expect(consoleSpy).not.toBeCalled();
 	});
 
-	test('logs errors in development environment', async () => {
+	it('logs errors in development environment', async () => {
 		process.env.NODE_ENV = 'development';
 		const req = mockRequest();
 		const res = mockResponse();
@@ -36,7 +36,7 @@ describe('Catch all errors middleware', () => {
 		expect(consoleSpy).toBeCalledWith(error);
 	});
 
-	test('responds with HTTPErrorResponse if error cannot be serialized to string', async () => {
+	it('responds with HTTPErrorResponse if error cannot be serialized to string', async () => {
 		process.env.NODE_ENV = 'spaceship';
 		const req = mockRequest();
 		const res = mockResponse();
@@ -49,7 +49,23 @@ describe('Catch all errors middleware', () => {
 		expect(res.error).toBeCalledWith(error);
 	});
 
-	test('responds with HTTPErrorMessage if error can be serialized to string', async () => {
+	it('responds with HTTPErrorResponseMessage if calling HTTPErrorResponse throws error', async () => {
+		process.env.NODE_ENV = 'spaceship';
+		const req = mockRequest();
+		const res = mockResponse();
+		res.error = jest.fn().mockImplementationOnce(() => {
+			throw new Error('just cry for no reason');
+		});
+
+		const error = {
+			stuff: 'you got this wrong',
+		};
+
+		await catchAllMiddleware(error, req, res, mockNext);
+		expect(res.errorMessage).toBeCalledWith('Server error');
+	});
+
+	it('responds with HTTPErrorMessage if error can be serialized to string', async () => {
 		process.env.NODE_ENV = 'spaceship';
 		const req = mockRequest();
 		const res = mockResponse();
@@ -60,7 +76,7 @@ describe('Catch all errors middleware', () => {
 		expect(res.errorMessage).toBeCalledWith(error);
 	});
 
-	test('json parse errors are reported differently', async () => {
+	it('json parse errors are reported differently', async () => {
 		process.env.NODE_ENV = 'spaceship';
 		const req = mockRequest();
 		const res = mockResponse();
