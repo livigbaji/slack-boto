@@ -1,4 +1,4 @@
-# Transaction Runner
+# Slack Bot
 
 [![Test and Deploy](https://github.com/bestbrain10/slack-boto/actions/workflows/workflow.yml/badge.svg)](https://github.com/bestbrain10/slack-boto/actions/workflows/workflow.yml)
 
