@@ -43,8 +43,7 @@ module.exports = class {
 							}))
 						}]
 					}]
-				},
-				answer: 'THANKYOU'
+				}
 			},
 			INTRO: {
 				trigger: ['hello'],
@@ -67,15 +66,14 @@ module.exports = class {
 							}))
 						}]
 					}]
-				},
-				answer: 'HOBBIES'
+				}
 			},
 			THANKYOU: {
 				trigger: Object.values(this.HOOBIESENUM),
 				prompt: 'thank you'
 			},
 			ASKFORHELLO: {
-				promt: 'Send \'/bot hello\' to start a conversation'
+				prompt: 'Send \'/bot hello\' to start a conversation'
 			}
 		};
 	}
@@ -121,8 +119,7 @@ module.exports = class {
 	 */
 	static async getPromptAndReply(prompt) {
 		const { message } = await this.decodePayload(prompt).toObject();
-
-		return Object.values(this.QUESTIONSENUM).find(({ trigger }) => trigger && trigger.includes(message)) || this.QUESTIONSENUM.ASKFORHELLO;
+		return (Object.values(this.QUESTIONSENUM).find(({ trigger }) => trigger && trigger.includes(message)) || this.QUESTIONSENUM.ASKFORHELLO).prompt;
 	}
 
 	/**
@@ -134,6 +131,6 @@ module.exports = class {
 	 * @returns 
 	 */
 	static async getResponses({user = null, limit = 50, offset = 0} = {}) {
-		return Response.find(user && { user }).limit(parseInt(limit) || 0 ).offset(parseInt(offset) || 0);
+		return Response.find(user && { user }).limit(parseInt(limit) || 50 ).offset(parseInt(offset) || 0);
 	}
 };

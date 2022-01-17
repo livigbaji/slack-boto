@@ -14,11 +14,11 @@ module.exports = {
 		response_url: 'https://hooks.slack.com/commands/T85170XAM/2984199516272/fY30kQW6sfBBrResQOl0hGRJ',
 		trigger_id: '2960464250194.277041031361.0c3efa62695574856ff66cb59c8b3ea6'
 	}),
-	selectionPrompt: (selection) => ({
+	selectionPrompt: ({ selection, name = 'mood_list' }) => ({
 		payload: JSON.stringify({
 			type: 'interactive_message',
 			actions: [{
-				name: 'games_list',
+				name,
 				type: 'select',
 				selected_options: [{
 					value: selection
@@ -35,7 +35,7 @@ module.exports = {
 			},
 			user: {
 				id: 'U85LLCR6H',
-				name: 'bestbrain10'
+				name: 'thor'
 			},
 			action_ts: '1642372392.952464',
 			message_ts: '1642372389.002000',
