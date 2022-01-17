@@ -19,7 +19,7 @@ describe('PROMPT FOR HELLO IF NORMAL PROMPT IS NOT HELLO', () => {
 	});
 
 	it('Sends a prompt to use hello', () => {
-		expect(response.body).toEqual('Send \'/bot hello\' to start a conversation');
+		expect(response.body).toEqual({ text: 'Send \'/bot hello\' to start a conversation' });
 	});
 });
 
@@ -138,6 +138,6 @@ describe('ANSWER TO HOBBIES RETRUNS THANK YOU', () => {
 	});
 
 	it('Replies thank you', () => {
-		expect(response.body).toEqual('thank you');
+		expect(response.body).toEqual({ text: 'thank you' });
 	});
 });
