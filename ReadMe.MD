@@ -2,6 +2,19 @@
 
 [![Test and Deploy](https://github.com/bestbrain10/slack-boto/actions/workflows/workflow.yml/badge.svg)](https://github.com/bestbrain10/slack-boto/actions/workflows/workflow.yml)
 
+### Live API
+https://slack-boto.herokuapp.com
+
+
+## API SPEC
+
+```http
+
+POST /messages
+
+GET /messages?user=<user_id>&limit=<num>&offset=<num>
+```
+
 
 ## How to Install 
 
