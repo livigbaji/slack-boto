@@ -131,6 +131,6 @@ module.exports = class {
 	 * @returns 
 	 */
 	static async getResponses({user = null, limit = 50, offset = 0} = {}) {
-		return Response.find(user && { user }).limit(parseInt(limit) || 50 ).offset(parseInt(offset) || 0);
+		return Response.find(user && { user }, null, { limit: parseInt(limit) || 50, skip: parseInt(offset) || 0 });
 	}
 };

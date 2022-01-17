@@ -11,41 +11,36 @@ describe('Bots Controller', () => {
 	});
 
 	it('Returns all user response with default pagination', async () => {
-		const offsetSpy = jest.fn().mockResolvedValueOnce([]);
-		const limitSpy = jest.fn().mockReturnValueOnce({ offset: offsetSpy });
-		const responseSpy = jest.spyOn(ResponseModel, 'find').mockReturnValueOnce({ limit: limitSpy });
+		const responseSpy = jest.spyOn(ResponseModel, 'find').mockResolvedValueOnce([]);
 		await ResponseRepository.getResponses();
-		expect(offsetSpy).toBeCalledWith(0);
-		expect(limitSpy).toBeCalledWith(50);
-		expect(responseSpy).toBeCalledWith(null);
+		expect(responseSpy).toBeCalledWith(null, null, { limit: 50, skip: 0 });
 	});
 
 	it('Returns all user response with user defined pagination', async () => {
-		const offsetSpy = jest.fn().mockResolvedValueOnce([]);
-		const limitSpy = jest.fn().mockReturnValueOnce({ offset: offsetSpy });
-		const responseSpy = jest.spyOn(ResponseModel, 'find').mockReturnValueOnce({ limit: limitSpy });
+		const responseSpy = jest.spyOn(ResponseModel, 'find').mockResolvedValueOnce([]);
 		await ResponseRepository.getResponses({
 			user: 'user_id',
 			limit: 1000,
 			offset: 10
 		});
-		expect(offsetSpy).toBeCalledWith(10);
-		expect(limitSpy).toBeCalledWith(1000);
-		expect(responseSpy).toBeCalledWith({ user: 'user_id' });
+
+		expect(responseSpy).toBeCalledWith({ user: 'user_id' }, null, {
+			limit: 1000,
+			skip: 10
+		});
 	});
 
 	it('uses default pagination if any user defined pagination is not a number', async () => {
-		const offsetSpy = jest.fn().mockResolvedValueOnce([]);
-		const limitSpy = jest.fn().mockReturnValueOnce({ offset: offsetSpy });
-		const responseSpy = jest.spyOn(ResponseModel, 'find').mockReturnValueOnce({ limit: limitSpy });
+		const responseSpy = jest.spyOn(ResponseModel, 'find').mockResolvedValueOnce([]);
 		await ResponseRepository.getResponses({
 			user: 'user_id',
 			limit: 'loki',
 			offset: 'hela'
 		});
-		expect(offsetSpy).toBeCalledWith(0);
-		expect(limitSpy).toBeCalledWith(50);
-		expect(responseSpy).toBeCalledWith({ user: 'user_id' });
+		expect(responseSpy).toBeCalledWith({ user: 'user_id' }, null, {
+			limit: 50,
+			skip: 0
+		});
 	});
 
 	it('Prompts for \'/bot hello\' if prompt is not a recognized command', async () => {
